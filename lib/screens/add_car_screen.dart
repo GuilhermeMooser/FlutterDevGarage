@@ -5,7 +5,7 @@ import '../models/car_model.dart';
 import '../providers/car_provider.dart';
 
 class AddCarScreen extends StatefulWidget {
-  const AddCarScreen();
+  const AddCarScreen({super.key});
 
   @override
   State<AddCarScreen> createState() => _AddCarScreenState();
