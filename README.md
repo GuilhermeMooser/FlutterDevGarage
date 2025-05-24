@@ -56,16 +56,16 @@ lib/
 
 1. Clone o repositório:
 ```bash
-bashgit clone git@github.com:GuilhermeMooser/FlutterDevGarage.git
+git clone git@github.com:GuilhermeMooser/FlutterDevGarage.git
 cd devgarage
 ```
 2. Instale as dependências:
 ```bash
-bashflutter pub get
+flutter pub get
 ```
 3. Execute o aplicativo:
 ```bash
-bashflutter run
+flutter run
 ```
 
 ## **📦 Dependências Principais**
