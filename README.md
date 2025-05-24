@@ -1,4 +1,4 @@
-#**devGarage 🚗**
+**devGarage 🚗**
 Um aplicativo Flutter completo para gerenciamento de carros, desenvolvido com arquitetura limpa e padrão Provider para gerenciamento de estado.
 **📱 Sobre o Projeto**
 O devGarage é uma aplicação mobile que permite aos usuários gerenciar uma coleção de carros de forma simples e intuitiva. O app oferece funcionalidades completas de CRUD (Create, Read, Update, Delete) para carros, integrando com APIs externas para uma experiência rica e dinâmica.
