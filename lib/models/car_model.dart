@@ -25,7 +25,7 @@ class Car {
 
   factory Car.fromMap(Map<String, dynamic> map) {
     return Car(
-      id: map['id'],
+      id: map['id'] != null ? int.tryParse(map['id'].toString()) : null,
       name: map['name'],
       brand: map['brand'],
       year: map['year'],

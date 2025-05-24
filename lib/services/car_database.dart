@@ -34,14 +34,33 @@ class CarDatabase {
     ''');
   }
 
-  Future<void> insertCar(Car car) async {
-    final db = await instance.database;
-    await db.insert('cars', car.toMap());
+  Future<void> insertCarIfNotExists(Car car) async {
+    final db = await database;
+
+    final existing = await db.query(
+      'cars',
+      where: 'id = ?',
+      whereArgs: [car.id],
+    );
+
+    if (existing.isEmpty) {
+      await db.insert('cars', car.toMap());
+    }
   }
 
   Future<List<Car>> getCars() async {
     final db = await instance.database;
     final result = await db.query('cars');
     return result.map((map) => Car.fromMap(map)).toList();
+  }
+
+  Future<int> updateCar(Car car) async {
+    final db = await instance.database;
+    return await db.update('cars', car.toMap(), where: 'id = ?', whereArgs: [car.id]);
+  }
+
+  Future<int> deleteCar(int id) async {
+    final db = await instance.database;
+    return await db.delete('cars', where: 'id = ?', whereArgs: [id]);
   }
 }
