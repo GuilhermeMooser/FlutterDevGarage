@@ -17,6 +17,7 @@ O **devGarage** é uma aplicação mobile que permite aos usuários gerenciar um
 
 ## **🏗️ Arquitetura**
 
+```
 O projeto segue uma arquitetura bem estruturada e organizada:
 lib/
 ├── main.dart                 # Ponto de entrada da aplicação
@@ -34,6 +35,7 @@ lib/
 │   └── car_database.dart    # Serviço de banco de dados local
 └── widgets/
 └── car_card.dart        # Widget reutilizável para exibir carros
+```
 
 ## **🛠️ Tecnologias Utilizadas**
 
@@ -53,17 +55,18 @@ lib/
 **Instalação**
 
 1. Clone o repositório:
-
+```bash
 bashgit clone git@github.com:GuilhermeMooser/FlutterDevGarage.git
 cd devgarage
-
+```
 2. Instale as dependências:
-
+```bash
 bashflutter pub get
-
+```
 3. Execute o aplicativo:
-
+```bash
 bashflutter run
+```
 
 ## **📦 Dependências Principais**
 ```yaml
