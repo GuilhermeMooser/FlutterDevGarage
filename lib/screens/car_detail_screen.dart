@@ -13,44 +13,110 @@ class CarDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final carProvider = Provider.of<CarProvider>(context, listen: false);
+    final themeColor = const Color(0xFFFFCA28);
 
     return Scaffold(
+      backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
-        title: Text(car.name),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
+          car.name.toUpperCase(),
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFFFCA28),
+            letterSpacing: 1.5,
+          ),
+        ),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => EditCarScreen(car: car),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete_outline),
+            tooltip: 'Excluir carro',
             onPressed: () => _confirmDelete(context, carProvider),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              car.imageUrl,
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            // Hero image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Hero(
+                tag: 'car-image-${car.id}',
+                child: Image.network(
+                  car.imageUrl,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-            const SizedBox(height: 16),
-            Text("Modelo: ${car.name}", style: TextStyle(fontSize: 20)),
-            Text("Marca: ${car.brand}", style: TextStyle(fontSize: 18)),
-            Text("Ano: ${car.year}", style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 30),
+            // Car info
+            _infoLabel("Nome do modelo"),
+            _infoText(car.name),
+
+            _infoLabel("Fabricante"),
+            _infoText(car.brand),
+
+            _infoLabel("Ano de fabricação"),
+            _infoText(car.year.toString()),
+
+            const SizedBox(height: 32),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => EditCarScreen(car: car),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.edit, color: Colors.black),
+                label: const Text(
+                  "Editar informações",
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: themeColor,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+            )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _infoLabel(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4, top: 12),
+      child: Text(
+        label.toUpperCase(),
+        style: const TextStyle(
+          color: Colors.white54,
+          fontSize: 13,
+          letterSpacing: 1,
+        ),
+      ),
+    );
+  }
+
+  Widget _infoText(String value) {
+    return Text(
+      value,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
       ),
     );
   }
@@ -59,23 +125,51 @@ class CarDetailScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Excluir carro'),
-        content: Text('Deseja excluir este carro?'),
+        backgroundColor: const Color(0xFF1E1E1E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          'Excluir este carro?',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+        content: const Text(
+          'Esta ação não poderá ser desfeita.',
+          style: TextStyle(color: Colors.white70),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text('Cancelar'),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.white70),
+            ),
           ),
           TextButton(
             onPressed: () async {
               await provider.deleteCar(car.id!);
               Navigator.of(ctx).pop(); // Fecha o dialog
               Navigator.of(context).pop(); // Volta da tela de detalhe
+
+              // Mostra o Snackbar na tela anterior (após Navigator.pop)
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('Carro excluído com sucesso.'),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: Colors.redAccent,
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              );
             },
-            child: Text('Excluir', style: TextStyle(color: Colors.red)),
+            child: const Text(
+              'Excluir',
+              style: TextStyle(color: Colors.redAccent),
+            ),
           ),
         ],
       ),
     );
   }
+
 }

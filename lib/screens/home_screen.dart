@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const SizedBox(height: 24),
               const Text(
-                'Outros carros',
+                'Veja mais',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
