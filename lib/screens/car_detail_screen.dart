@@ -12,8 +12,9 @@ class CarDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final carProvider = Provider.of<CarProvider>(context, listen: false);
     final themeColor = const Color(0xFFFFCA28);
+    final carProvider = Provider.of<CarProvider>(context);
+    final updatedCar = carProvider.getById(car.id!); // Atualiza sempre o carro mais recente
 
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
@@ -22,7 +23,7 @@ class CarDetailScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          car.name.toUpperCase(),
+          updatedCar.name.toUpperCase(),
           style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -47,9 +48,9 @@ class CarDetailScreen extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Hero(
-                tag: 'car-image-${car.id}',
+                tag: 'car-image-${updatedCar.id}',
                 child: Image.network(
-                  car.imageUrl,
+                  updatedCar.imageUrl,
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -59,13 +60,13 @@ class CarDetailScreen extends StatelessWidget {
             const SizedBox(height: 30),
             // Car info
             _infoLabel("Nome do modelo"),
-            _infoText(car.name),
+            _infoText(updatedCar.name),
 
             _infoLabel("Fabricante"),
-            _infoText(car.brand),
+            _infoText(updatedCar.brand),
 
             _infoLabel("Ano de fabricação"),
-            _infoText(car.year.toString()),
+            _infoText(updatedCar.year.toString()),
 
             const SizedBox(height: 32),
             Center(
@@ -74,7 +75,7 @@ class CarDetailScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => EditCarScreen(car: car),
+                      builder: (_) => EditCarScreen(car: updatedCar),
                     ),
                   );
                 },
@@ -95,7 +96,6 @@ class CarDetailScreen extends StatelessWidget {
       ),
     );
   }
-
   Widget _infoLabel(String label) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4, top: 12),

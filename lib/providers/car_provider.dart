@@ -29,7 +29,7 @@ class CarProvider with ChangeNotifier {
     await loadCars();
   }
 
-  Car? getById(int id) {
+  Car getById(int id) {
     return _cars.firstWhere((car) => car.id == id);
   }
 
