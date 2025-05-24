@@ -14,7 +14,28 @@ class CarDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeColor = const Color(0xFFFFCA28);
     final carProvider = Provider.of<CarProvider>(context);
-    final updatedCar = carProvider.getById(car.id!); // Atualiza sempre o carro mais recente
+    final updatedCar = carProvider.getById(car.id!);
+    if (updatedCar == null) {
+      // Carro foi excluído ou não existe mais
+      return Scaffold(
+        backgroundColor: const Color(0xFF121212),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            'Carro não encontrado',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body: const Center(
+          child: Text(
+            'Este carro não está mais disponível.',
+            style: TextStyle(color: Colors.white70, fontSize: 16),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
@@ -44,7 +65,6 @@ class CarDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Hero image
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Hero(
@@ -58,16 +78,12 @@ class CarDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            // Car info
             _infoLabel("Nome do modelo"),
             _infoText(updatedCar.name),
-
             _infoLabel("Fabricante"),
             _infoText(updatedCar.brand),
-
             _infoLabel("Ano de fabricação"),
             _infoText(updatedCar.year.toString()),
-
             const SizedBox(height: 32),
             Center(
               child: ElevatedButton.icon(
@@ -96,6 +112,7 @@ class CarDetailScreen extends StatelessWidget {
       ),
     );
   }
+
   Widget _infoLabel(String label) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4, top: 12),
@@ -146,21 +163,22 @@ class CarDetailScreen extends StatelessWidget {
           TextButton(
             onPressed: () async {
               await provider.deleteCar(car.id!);
-              Navigator.of(ctx).pop(); // Fecha o dialog
-              Navigator.of(context).pop(); // Volta da tela de detalhe
+              Navigator.of(ctx).pop(); // Fecha o diálogo
+              Navigator.of(context).pop(); // Volta da tela de detalhes
 
-              // Mostra o Snackbar na tela anterior (após Navigator.pop)
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('Carro excluído com sucesso.'),
-                  duration: const Duration(seconds: 2),
-                  backgroundColor: Colors.redAccent,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Carro excluído com sucesso.'),
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: Colors.redAccent,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                ),
-              );
+                );
+              });
             },
             child: const Text(
               'Excluir',
@@ -171,5 +189,4 @@ class CarDetailScreen extends StatelessWidget {
       ),
     );
   }
-
 }

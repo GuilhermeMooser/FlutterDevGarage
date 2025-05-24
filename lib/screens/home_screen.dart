@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121212), // fundo escuro
+      backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -46,7 +46,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFFFFCA28)))
+          ? const Center(
+        child: CircularProgressIndicator(color: Color(0xFFFFCA28)),
+      )
+          : cars.isEmpty
+          ? const Center(
+        child: Text(
+          'Nenhum carro foi cadastrado ainda.',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white70,
+            fontWeight: FontWeight.w600,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      )
           : Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
@@ -54,12 +68,12 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// LOGO placeholder
               const SizedBox(height: 12),
               Center(
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 18, vertical: 8),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFCA28),
                     borderRadius: BorderRadius.circular(30),
@@ -83,17 +97,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              /// Destaque
               if (cars.isNotEmpty)
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       PageRouteBuilder(
-                        transitionDuration: const Duration(milliseconds: 500),
-                        pageBuilder: (_, __, ___) => CarDetailScreen(car: cars[0]),
-                        transitionsBuilder: (_, animation, __, child) =>
-                            FadeTransition(opacity: animation, child: child),
+                        transitionDuration:
+                        const Duration(milliseconds: 500),
+                        pageBuilder: (_, __, ___) =>
+                            CarDetailScreen(car: cars[0]),
+                        transitionsBuilder:
+                            (_, animation, __, child) =>
+                            FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            ),
                       ),
                     );
                   },
@@ -111,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 12),
 
-              /// Lista
               ListView.builder(
                 itemCount: cars.length - 1,
                 shrinkWrap: true,
@@ -123,9 +141,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          transitionDuration: const Duration(milliseconds: 500),
-                          pageBuilder: (_, __, ___) => CarDetailScreen(car: car),
-                          transitionsBuilder: (_, animation, __, child) =>
+                          transitionDuration:
+                          const Duration(milliseconds: 500),
+                          pageBuilder: (_, __, ___) =>
+                              CarDetailScreen(car: car),
+                          transitionsBuilder:
+                              (_, animation, __, child) =>
                               SlideTransition(
                                 position: Tween<Offset>(
                                   begin: const Offset(1, 0),

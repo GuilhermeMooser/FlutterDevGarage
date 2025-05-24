@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/car_model.dart';
 import '../services/car_api_service.dart';
 import '../services/car_database.dart';
+import 'package:collection/collection.dart';
 
 class CarProvider with ChangeNotifier {
   List<Car> _cars = [];
@@ -29,8 +30,8 @@ class CarProvider with ChangeNotifier {
     await loadCars();
   }
 
-  Car getById(int id) {
-    return _cars.firstWhere((car) => car.id == id);
+  Car? getById(int id) {
+    return _cars.firstWhereOrNull((c) => c.id == id);
   }
 
   Future<void> fetchAndSaveFromApi() async {
